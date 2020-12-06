@@ -1,5 +1,3 @@
-package cliente;
-
 import java.net.*;
 import java.io.*;
 
@@ -86,6 +84,9 @@ public class Cliente
         {} // sei que servidor foi instanciado
 		
         tratadoraDeComunicadoDeDesligamento.start();
-    }
+        
+         int numero = 45;
     
+		System.out.println(numero);
+    }
 }

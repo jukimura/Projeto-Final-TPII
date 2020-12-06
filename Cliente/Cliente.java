@@ -6,7 +6,7 @@ public class Cliente
     public static final String HOST = "localhost";
     public static final int PORTA_PADRAO = 3000;
     
-    public static void main(String[] args) 
+    public static void main(String[] args) throws Exception
     {
          if (args.length>2)
         {
@@ -85,11 +85,60 @@ public class Cliente
 		
         tratadoraDeComunicadoDeDesligamento.start();
         
-        int jogarDeNovo = 0;
+        
+        
+        char jogarDeNovo = ' ';
+        int soma = 0;
+        int opcao = 0;
+        int opcaoCartaASerDescartada = 0;
+		Mao mao = new Mao();
+		Carta cartaNova = new Carta();
+		Carta pilhaDescarte = new Carta();
+		Teclado teclado = new Teclado();
         do
         {        
 			System.out.println(" =============== JOGO 21 ===============");
-			System.out.print("\n Digite 1 para jogar novamente");
-		}while(jogarDeNovo == 1);
+			
+			Baralho baralho = new Baralho();
+			//baralho.distribuirCartas();
+			//mao.getMao();
+			System.out.print("\nEstas sao suas cartas: ");
+			//System.out.println(mao.getMao());
+			//soma = mao.getvalorTotal();
+			System.out.print("\nSua soma e :" + soma);
+			System.out.print("\n\nDigite 1 para comprar do monte: ");
+			opcao = teclado.getUmInt();
+			
+			//cartaNova = baralho.sortearCarta();
+			//mao.inserirCartaNaMao(cartaNova);
+			System.out.print("A carta que voce comprou e :");
+			//System.out.print(baralho.getCartaComprada);
+			
+			//System.out.print("Agora, estas sao suas cartas:" + mao.getMao4Cartas());
+			System.out.print("Qual carta voce deseja descartar? ");
+			opcaoASerDescartada = teclado.getUmInt();
+			
+			switch(opcaoCartaASerDescartada)
+			{
+				case 1:
+				
+				break;
+				
+				case 2:
+				
+				break;
+				
+				case 3:
+				
+				break;
+				
+				case 4: 
+				
+				break;
+			
+			
+			System.out.print("\n Voce deseja jogar novamente? [S/N]");
+			jogarDeNovo = teclado.getUmChar();
+		}while(jogarDeNovo == 'S');
     }
 }

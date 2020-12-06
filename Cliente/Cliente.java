@@ -85,8 +85,11 @@ public class Cliente
 		
         tratadoraDeComunicadoDeDesligamento.start();
         
-         int numero = 45;
-    
-		System.out.println(numero);
+        int jogarDeNovo = 0;
+        do
+        {        
+			System.out.println(" =============== JOGO 21 ===============");
+			System.out.print("\n Digite 1 para jogar novamente");
+		}while(jogarDeNovo == 1);
     }
 }

@@ -9,6 +9,6 @@ package cliente;
  *
  * @author Julia Carolina
  */
-public class PedidoDeCarta {
+public class PedirCarta {
     
 }

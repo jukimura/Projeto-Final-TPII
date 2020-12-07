@@ -90,55 +90,72 @@ public class Cliente
         char jogarDeNovo = ' ';
         int soma = 0;
         int opcao = 0;
-        int opcaoCartaASerDescartada = 0;
+        String textoCarta = ""; 
+        int valorCarta = 0;
 		Mao mao = new Mao();
-		Carta cartaNova = new Carta();
-		Carta pilhaDescarte = new Carta();
+		Carta carta;
+		Carta cartaNova;
+		Carta pilhaDescarte;
 		Teclado teclado = new Teclado();
         do
         {        
 			System.out.println(" =============== JOGO 21 ===============");
 			
-			Baralho baralho = new Baralho();
-			//baralho.distribuirCartas();
-			//mao.getMao();
 			System.out.print("\nEstas sao suas cartas: ");
-			//System.out.println(mao.getMao());
-			//soma = mao.getvalorTotal();
-			System.out.print("\nSua soma e :" + soma);
-			System.out.print("\n\nDigite 1 para comprar do monte: ");
+			//mao.montarMao();
+			//System.out.println(mao.getMaoTresCartas());
+			//soma = mao.getValorTotal();
+			System.out.print("\nSua soma e : " + soma);
+			System.out.print("\n\nDigite 1 para comprar do monte: ");			
 			opcao = teclado.getUmInt();
 			
 			//cartaNova = baralho.sortearCarta();
 			//mao.inserirCartaNaMao(cartaNova);
-			System.out.print("A carta que voce comprou e :");
-			//System.out.print(baralho.getCartaComprada);
+			System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()));
 			
-			//System.out.print("Agora, estas sao suas cartas:" + mao.getMao4Cartas());
-			System.out.print("Qual carta voce deseja descartar? ");
-			opcaoASerDescartada = teclado.getUmInt();
-			
+			System.out.print("\n\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas());
+			System.out.print("\nQual carta voce deseja descartar? ");
+			int opcaoCartaASerDescartada = 0;
+			opcaoCartaASerDescartada = teclado.getUmInt();
+			if(opcaoCartaASerDescartada != 1 || opcaoCartaASerDescartada != 2 || opcaoCartaASerDescartada != 3 || opcaoCartaASerDescartada != 4)
+				throw new Exception(" Você não possui essa carta. Insira uma carta válida: [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "] ");
 			switch(opcaoCartaASerDescartada)
 			{
 				case 1:
-				
-				break;
-				
+				{
+					pilhaDescarte = mao.getPrimeiraCarta();
+					//mao.removerDaMao(pilhaDescarte);
+				}	
+				break;	
 				case 2:
-				
+					pilhaDescarte = mao.getSegundaCarta();
+					//mao.removerDaMao(pilhaDescarte);
+
 				break;
-				
 				case 3:
-				
+					pilhaDescarte = mao.getTerceiraCarta();
+					//mao.removerDaMao(pilhaDescarte);
+
 				break;
-				
-				case 4: 
-				
+				case 4:
+					pilhaDescarte = mao.getQuartaCarta();
+					//mao.removerDaMao(pilhaDescarte);
 				break;
-			
-			
+			}
 			System.out.print("\n Voce deseja jogar novamente? [S/N]");
 			jogarDeNovo = teclado.getUmChar();
-		}while(jogarDeNovo == 'S');
+		}
+		while(jogarDeNovo == 'S');
+		
+		try
+		{
+			servidor.receba (new PedidoParaSair ());
+		}
+		catch (Exception erro)
+		{}
+		
+		System.out.println ("Obrigado por usar este programa!");
+		System.exit(0);
     }
 }
+

@@ -6,7 +6,7 @@ public class Cliente
     public static final String HOST = "localhost";
     public static final int PORTA_PADRAO = 3000;
     
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
          if (args.length>2)
         {
@@ -98,7 +98,7 @@ public class Cliente
 		Carta pilhaDescarte;
 		Teclado teclado = new Teclado();
         do
-        {        
+		{      
 			System.out.println(" =============== JOGO 21 ===============");
 			
 			System.out.print("\nEstas sao suas cartas: ");
@@ -106,19 +106,44 @@ public class Cliente
 			//System.out.println(mao.getMaoTresCartas());
 			//soma = mao.getValorTotal();
 			System.out.print("\nSua soma e : " + soma);
-			System.out.print("\n\nDigite 1 para comprar do monte: ");			
-			opcao = teclado.getUmInt();
+			do
+			{
+				try
+				{
+					System.out.print("\n\nDigite 1 para comprar do monte: ");			
+					opcao = teclado.getUmInt();
+				}
+				catch(Exception erro)
+				{
+					System.out.println("Opcao invalida");
+				}
+			}while (opcao != 1);
 			
-			//cartaNova = baralho.sortearCarta();
+
+			//cartaNova = baralho.comprar();
 			//mao.inserirCartaNaMao(cartaNova);
-			System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()));
+			System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()) + "\n\n");
 			
-			System.out.print("\n\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas());
-			System.out.print("\nQual carta voce deseja descartar? ");
+			System.out.print("\n\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
+			System.out.print("\nQual carta voce deseja descartar?");
 			int opcaoCartaASerDescartada = 0;
-			opcaoCartaASerDescartada = teclado.getUmInt();
-			if(opcaoCartaASerDescartada != 1 || opcaoCartaASerDescartada != 2 || opcaoCartaASerDescartada != 3 || opcaoCartaASerDescartada != 4)
-				throw new Exception(" Você não possui essa carta. Insira uma carta válida: [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "] ");
+			boolean ehValida = false;
+			do
+			{
+				try
+				{
+					opcaoCartaASerDescartada = teclado.getUmInt();
+					if(opcaoCartaASerDescartada != 1 || opcaoCartaASerDescartada != 2 || opcaoCartaASerDescartada != 3 || opcaoCartaASerDescartada != 4)
+						ehValida = false;
+					else
+						ehValida = true;
+				} 
+				catch(Exception erro)
+				{
+					System.out.println(" Você não possui essa carta. Insira uma carta válida: [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "] ");
+				}
+			}while(ehValida != true);
+			
 			switch(opcaoCartaASerDescartada)
 			{
 				case 1:
@@ -142,8 +167,39 @@ public class Cliente
 					//mao.removerDaMao(pilhaDescarte);
 				break;
 			}
+			System.out.print("Agora, estas sao suas cartas: ");
+			System.out.print(mao.getMaoTresCartas());
+			soma = mao.getValorTotal();
+			System.out.println("Sua soma agora e: " + soma);
+			
+			if(soma == 21)
+			{
+				try
+				{
+					ComunicadoDeVitoria comunicadoDeVitoria = new ComunicadoDeVitoria();
+					servidor.receba(comunicadoDeVitoria);
+				}
+				catch(Exception erro)
+				{
+					System.err.println("Erro de transmissao");
+				}
+			}
+			
 			System.out.print("\n Voce deseja jogar novamente? [S/N]");
-			jogarDeNovo = teclado.getUmChar();
+			try
+			{
+				jogarDeNovo = Character.toUpperCase(teclado.getUmChar());			
+			}
+			catch(Exception erro)
+			{
+				System.err.println("Opcao invalida!\n");
+				continue;
+			}
+			if("SN".indexOf(jogarDeNovo) == -1)
+			{
+				System.err.println("Opcao invalida!\n");
+				continue;
+			}							
 		}
 		while(jogarDeNovo == 'S');
 		

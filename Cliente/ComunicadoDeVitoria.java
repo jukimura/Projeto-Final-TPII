@@ -1,4 +1,3 @@
 
-public class ComunicadoDeVitoria {
-    
-}
+public class ComunicadoDeVitoria extends Comunicado
+{}

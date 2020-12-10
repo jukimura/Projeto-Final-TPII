@@ -1,4 +1,5 @@
-public class Carta {
+public class Carta extends Comunicado
+{
     private String texto;
     private int valor;
 

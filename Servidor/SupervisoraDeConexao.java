@@ -8,6 +8,7 @@ public class SupervisoraDeConexao extends Thread
     private Parceiro            usuario;
     private Socket              conexao;
     private ArrayList<Parceiro> usuarios;
+    private static int qtdJogadores = 0;
 
     public SupervisoraDeConexao
             (Socket conexao, ArrayList<Parceiro> usuarios)
@@ -72,6 +73,12 @@ public class SupervisoraDeConexao extends Thread
             synchronized (this.usuarios)
             {
                 this.usuarios.add (this.usuario);
+                this.qtdJogadores++;
+                if(this.qtdJogadores == 3)
+				for(Parceiro usuario: this.usuarios)
+				{
+					usuario.receba(new ComunicadoIniciarJogo(true));
+				}
             }
 
 
@@ -81,11 +88,12 @@ public class SupervisoraDeConexao extends Thread
 
                 if (comunicado==null)
                     return;
-                else if (comunicado instanceof PedidoDeOperacao)
+                    
+                 if (comunicado instanceof PedidoDeCarta)
                 {
-                    PedidoDeOperacao pedidoDeOperacao = (PedidoDeOperacao)comunicado;
+                    PedidoDeCarta pedidoDecarta = (PedidoDeCarta)comunicado;
 
-                    switch (pedidoDeOperacao.getOperacao())
+                    switch (pedidoDeCarta.getOperacao())
                     {
                         case '+':
                             this.valor += pedidoDeOperacao.getValor();

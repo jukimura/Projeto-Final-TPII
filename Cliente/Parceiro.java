@@ -89,4 +89,16 @@ public class Parceiro
             throw new Exception ("Erro de desconexao");
         }
     }
+    
+    public void compra(Carta carta) throws Exception{
+        try
+        {
+            this.transmissor.writeObject (carta);
+            this.transmissor.flush       ();
+        }
+        catch (IOException erro)
+        {
+            throw new Exception ("Erro de transmissao");
+        }
+    }
 }

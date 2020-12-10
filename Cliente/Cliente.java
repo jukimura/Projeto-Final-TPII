@@ -86,7 +86,6 @@ public class Cliente
         tratadoraDeComunicadoDeDesligamento.start();
         
         
-        
         char jogarDeNovo = ' ';
         int soma = 0;
         int opcao = 0;
@@ -94,19 +93,27 @@ public class Cliente
         String textoCarta = ""; 
         boolean primeiraVez = true;
         int valorCarta = 0;
-		Mao mao = new Mao();
-		Carta carta;
-		Carta cartaNova;
-		Carta pilhaDescarte;
+		Mao mao;
+		PilhaDeDescarte pilhaDeDescarte = new PilhaDeDescarte();
 		Teclado teclado = new Teclado();
-
-			do
-			{      
-				System.out.println(" =============== JOGO 21 ===============");
+			
+		do
+		{      
+			try
+			{
+				System.out.println("=============== JOGO 21 ===============");
 				
 				System.out.print("\nEstas sao suas cartas: ");
-				mao.montarMao();
-				System.out.println(mao.getMaoTresCartas());
+				servidor.receba(new PedidoDeMao());
+				Comunicado comunicado = null;
+				do
+				{
+					comunicado = (Comunicado)servidor.espie();
+				}
+				while(!(comunicado instanceof Mao));
+				mao = (Mao)servidor.envie();
+				
+				System.out.println(mao.toString());
 				soma = mao.getValorTotal();
 				qtdCartas = 3;
 				System.out.print("\nSua soma e : " + soma);
@@ -144,11 +151,11 @@ public class Cliente
 				}while (opcao != 1);
 				
 				qtdCartas = 4;
-				mao.comprarQuartaCarta();
-				System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()) + "\n\n");
+				//mao.comprarQuartaCarta();
+				//System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()) + "\n\n");
 				
-				System.out.print("\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
-				soma = mao.getValorTotalQuatroCartas();
+				//System.out.print("\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
+				//soma = mao.getValorTotalQuatroCartas();
 				System.out.println("\nSua soma e: " + soma + "\n");
 				System.out.print("\nQual carta voce deseja descartar? ");
 				int opcaoCartaASerDescartada = 0;
@@ -165,7 +172,7 @@ public class Cliente
 					} 
 					catch(Exception erro)
 					{
-						System.out.print(" Você não possui essa carta. Insira uma carta válida [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "]: ");
+						//System.out.print(" Você não possui essa carta. Insira uma carta válida [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "]: ");
 					}
 				}while(ehValida != true);
 				
@@ -173,29 +180,30 @@ public class Cliente
 				{
 					case 1:
 					{
-						pilhaDescarte = mao.getPrimeiraCarta();
+						servidor.receba(mao.descartar(0));
+						//pilhaDescarte = mao.getPrimeiraCarta();
 						//mao.removerDaMao(pilhaDescarte);
 						qtdCartas = 3;
 					}	
 					break;	
 					case 2:
-						pilhaDescarte = mao.getSegundaCarta();
+						//pilhaDescarte = mao.getSegundaCarta();
 						//mao.removerDaMao(pilhaDescarte);
 						qtdCartas = 3;
 					break;
 					case 3:
-						pilhaDescarte = mao.getTerceiraCarta();
+						//pilhaDescarte
 						//mao.removerDaMao(pilhaDescarte);
 						qtdCartas = 3;
 					break;
 					case 4:
-						pilhaDescarte = mao.getQuartaCarta();
+						//pilhaDescarte = mao.getQuartaCarta();
 						//mao.removerDaMao(pilhaDescarte);
 						qtdCartas = 3;					
 					break;
 				}
 				System.out.print("Agora, estas sao suas cartas: ");
-				System.out.print(mao.getMaoTresCartas());
+			//	System.out.print(mao.getMaoTresCartas());
 				soma = mao.getValorTotal();
 				System.out.println("Sua soma agora e: " + soma);
 				
@@ -226,9 +234,17 @@ public class Cliente
 				{
 					System.err.println("Opcao invalida!\n");
 					continue;
-				}							
+				}
 			}
-			while(jogarDeNovo == 'S');
+			catch (Exception erro)
+			{
+				System.err.println ("Erro de comunicacao com o servidor;");
+				System.err.println ("Tente novamente!");
+				System.err.println ("Caso o erro persista, termine o programa");
+				System.err.println ("e volte a tentar mais tarde!\n");
+			}							
+		}
+		while(jogarDeNovo == 'S');
 		try
 		{
 			servidor.receba (new PedidoParaSair ());

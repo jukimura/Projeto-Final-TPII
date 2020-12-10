@@ -1,85 +1,70 @@
 
-public class Mao 
+public class Mao extends Comunicado
 {
-	private Carta primeiraCarta, segundaCarta, terceiraCarta, quartaCarta;
-	private Baralho baralho = new Baralho();
-	private int soma = 0;
+	private Carta[] mao = new Carta[4];
+	private byte soma = 0;
+	private int qtd = 0;
 	
-	public Mao()
-	{
-		this.primeiraCarta = null;
-		this.segundaCarta = null;
-		this.terceiraCarta = null;
-		this.quartaCarta = null;
+    public Mao(Carta carta1, Carta carta2, Carta carta3)
+    {
+        this.mao[0] = carta1;
+        this.mao[1] = carta2;
+        this.mao[2] = carta3;
+        this.qtd = 3;
+
 		this.soma = 0;
-	}
+    }
 	
-	public void montarMao()
-	{
-		this.primeiraCarta = baralho.comprar();
-		this.segundaCarta = baralho.comprar();
-		this.terceiraCarta = baralho.comprar();
-	}
-	
-	public int getValorTotal()
-	{
-		this.soma = getValor(this.primeiraCarta) + getValor(this.segundaCarta) + getValor(this.terceiraCarta);
-		return soma;
-	}
-	
-	public int getValorTotalQuatroCartas()
-	{
-		this.soma = getValor(this.primeiraCarta) + getValor(this.segundaCarta) + getValor(this.terceiraCarta) + getValor(this.quartaCarta);
-		return soma;
-	}
-	
-	public String getMaoTresCartas()
-	{
-		return getTexto(getPrimeiraCarta()) + ", " + getTexto(getSegundaCarta()) + ", " + getTexto(getTerceiraCarta());
-	}
-	
-	public Carta getPrimeiraCarta()
-	{
-		return primeiraCarta;
-	}
-	
-	public Carta getSegundaCarta()
-	{
-		return segundaCarta;
-	}
-	
-	public Carta getTerceiraCarta()
-	{
-		return terceiraCarta;
-	}
-	
-	public Carta getQuartaCarta()
-	{
-		return this.quartaCarta;
-	}
-	
+	 public String toString()
+    {
+        String toString = "";
+        if(qtd > 3){
+            for(int i = 0; i < 4; i++){
+                toString = toString + this.mao[i].toString() + " ";
+            }
+        }
+        else{
+            for(int i = 0; i  < 3; i++){
+                toString = toString + this.mao[i].toString() + " ";
+            }
+        }
+        return toString;
+    }
+
 	public String getTexto (Carta carta)
 	{
 		return carta.toString();
 	}
 	
-	public int getValor(Carta carta)
+	public void comprarOuPegarDoMonte(Carta carta)
 	{
-		return carta.getValor();
+		this.mao[3] = carta;
+		this.qtd = 4;
 	}
 	
-	public void comprarQuartaCarta()
+	public Carta descartar(int pos)
 	{
-		this.quartaCarta = baralho.comprar();
-	}
-	
-	public String getMaoQuatroCartas()
-	{
-		return getTexto(getPrimeiraCarta()) + ", " + getTexto(getSegundaCarta()) + ", " + getTexto(getTerceiraCarta()) + ", " + getTexto(getQuartaCarta());
-	}
-	
-	public void removerDaMao(int opcao)
-	{
-	}
-
+		Carta retorno = mao[pos];
+        if(pos == 3)
+            this.mao[pos] = null;
+        else 
+        {
+            for (int i = pos; i < qtd-1; i++){
+                this.mao[i] = this.mao[i + 1];
+            }
+            this.mao[3] = null;
+        }
+        qtd = 3;
+        return retorno;
+    }
+    
+    public byte getValorTotal()
+    {
+        byte soma = 0;
+        for(Carta carta:mao)
+        {
+            soma += carta.getValor();
+        }
+        return soma;
+    }
 }

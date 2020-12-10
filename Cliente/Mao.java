@@ -18,12 +18,18 @@ public class Mao
 	{
 		this.primeiraCarta = baralho.comprar();
 		this.segundaCarta = baralho.comprar();
-		this.segundaCarta = baralho.comprar();
+		this.terceiraCarta = baralho.comprar();
 	}
 	
 	public int getValorTotal()
 	{
 		this.soma = getValor(this.primeiraCarta) + getValor(this.segundaCarta) + getValor(this.terceiraCarta);
+		return soma;
+	}
+	
+	public int getValorTotalQuatroCartas()
+	{
+		this.soma = getValor(this.primeiraCarta) + getValor(this.segundaCarta) + getValor(this.terceiraCarta) + getValor(this.quartaCarta);
 		return soma;
 	}
 	
@@ -49,7 +55,6 @@ public class Mao
 	
 	public Carta getQuartaCarta()
 	{
-		this.quartaCarta = baralho.comprar();
 		return this.quartaCarta;
 	}
 	

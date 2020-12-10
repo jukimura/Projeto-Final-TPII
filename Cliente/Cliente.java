@@ -106,8 +106,8 @@ public class Cliente
 				
 				System.out.print("\nEstas sao suas cartas: ");
 				mao.montarMao();
-				//System.out.println(mao.getMaoTresCartas());
-				//soma = mao.getValorTotal();
+				System.out.println(mao.getMaoTresCartas());
+				soma = mao.getValorTotal();
 				qtdCartas = 3;
 				System.out.print("\nSua soma e : " + soma);
 				do
@@ -143,14 +143,14 @@ public class Cliente
 					
 				}while (opcao != 1);
 				
-
-				//cartaNova = baralho.comprar();
-				//mao.inserirCartaNaMao(cartaNova);
 				qtdCartas = 4;
+				mao.comprarQuartaCarta();
 				System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()) + "\n\n");
 				
-				System.out.print("\n\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
-				System.out.print("\nQual carta voce deseja descartar?");
+				System.out.print("\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
+				soma = mao.getValorTotalQuatroCartas();
+				System.out.println("\nSua soma e: " + soma + "\n");
+				System.out.print("\nQual carta voce deseja descartar? ");
 				int opcaoCartaASerDescartada = 0;
 				boolean ehValida = false;
 				do
@@ -165,7 +165,7 @@ public class Cliente
 					} 
 					catch(Exception erro)
 					{
-						System.out.println(" Você não possui essa carta. Insira uma carta válida: [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "] ");
+						System.out.print(" Você não possui essa carta. Insira uma carta válida [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "]: ");
 					}
 				}while(ehValida != true);
 				

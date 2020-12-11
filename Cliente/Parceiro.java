@@ -51,8 +51,8 @@ public class Parceiro
         try
         {
             this.mutEx.acquireUninterruptibly();
-            if (this.proximoComunicado==null) this.proximoComunicado = (Comunicado)this.receptor.readObject();
             this.mutEx.release();
+            if (this.proximoComunicado==null) this.proximoComunicado = (Comunicado)this.receptor.readObject();
             return this.proximoComunicado;
         }
         catch (Exception erro)

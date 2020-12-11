@@ -8,10 +8,11 @@ public class SupervisoraDeConexao extends Thread
     private Parceiro            usuario;
     private Socket              conexao;
     private ArrayList<Parceiro> usuarios;
-    private static int qtdJogadores = 0;
+    private Baralho             baralho;
+	
 
     public SupervisoraDeConexao
-            (Socket conexao, ArrayList<Parceiro> usuarios)
+            (Socket conexao, ArrayList<Parceiro> usuarios, Baralho baralho)
             throws Exception
     {
         if (conexao==null)
@@ -20,13 +21,17 @@ public class SupervisoraDeConexao extends Thread
         if (usuarios==null)
             throw new Exception ("Usuarios ausentes");
 
+        if (baralho ==null)
+            throw new Exception("Baralho ausente");
+
         this.conexao  = conexao;
         this.usuarios = usuarios;
+        this.baralho = baralho;
     }
+
 
     public void run ()
     {
-
         ObjectOutputStream transmissor;
         try
         {
@@ -68,19 +73,21 @@ public class SupervisoraDeConexao extends Thread
         catch (Exception erro)
         {} // sei que passei os parametros corretos
 
+
+
         try
         {
             synchronized (this.usuarios)
             {
                 this.usuarios.add (this.usuario);
-                this.qtdJogadores++;
-                if(this.qtdJogadores == 3)
-				for(Parceiro usuario: this.usuarios)
-				{
-					usuario.receba(new ComunicadoIniciarJogo(true));
-				}
             }
 
+            QuantidadeJogadoresMsg qtdJogadores = new QuantidadeJogadoresMsg();
+
+            for(;usuarios.size()<3;)
+            {
+                this.usuario.receba(qtdJogadores);
+            }
 
             for(;;)
             {
@@ -89,31 +96,18 @@ public class SupervisoraDeConexao extends Thread
                 if (comunicado==null)
                     return;
                     
-                 if (comunicado instanceof PedidoDeCarta)
+                else if (comunicado instanceof PedidoDeCompra)
                 {
-                    PedidoDeCarta pedidoDecarta = (PedidoDeCarta)comunicado;
-
-                    switch (pedidoDeCarta.getOperacao())
-                    {
-                        case '+':
-                            this.valor += pedidoDeOperacao.getValor();
-                            break;
-
-                        case '-':
-                            this.valor -= pedidoDeOperacao.getValor();
-                            break;
-
-                        case '*':
-                            this.valor *= pedidoDeOperacao.getValor();
-                            break;
-
-                        case '/':
-                            this.valor /= pedidoDeOperacao.getValor();
-                    }
+                    this.usuario.compra (baralho.comprar());
                 }
-                else if (comunicado instanceof PedidoDeResultado)
+                else if (comunicado instanceof Carta)
                 {
-                    this.usuario.receba (new Resultado (this.valor));
+                    this.usuario.compra(baralho.comprar());
+                }
+                else if (comunicado instanceof PedidoDeMao)
+                {
+					Mao mao = new Mao(baralho.comprar(), baralho.comprar(), baralho.comprar());
+                    this.usuario.receba(mao);
                 }
                 else if (comunicado instanceof PedidoParaSair)
                 {

@@ -1,5 +1,4 @@
-public class PilhaDeDescarte
- {
+public class PilhaDeDescarte {
     private Carta[] pilhaDeDescarte = new Carta[52];
     private byte qtd = 0;
 
@@ -37,9 +36,4 @@ public class PilhaDeDescarte
 
         return toString;
     }
-    
-    public byte getQtdCartas()
-    {
-		return this.qtd;
-	}
 }

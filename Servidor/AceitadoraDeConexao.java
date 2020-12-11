@@ -5,9 +5,10 @@ public class AceitadoraDeConexao extends Thread
 {
     private ServerSocket        pedido;
     private ArrayList<Parceiro> usuarios;
+    private Baralho             baralho;
 
     public AceitadoraDeConexao
-            (String porta, ArrayList<Parceiro> usuarios)
+            (String porta, ArrayList<Parceiro> usuarios, Baralho baralho)
             throws Exception
     {
         if (porta==null)
@@ -27,6 +28,7 @@ public class AceitadoraDeConexao extends Thread
             throw new Exception ("Usuarios ausentes");
 
         this.usuarios = usuarios;
+        this.baralho = baralho;
     }
 
     public void run ()
@@ -47,7 +49,7 @@ public class AceitadoraDeConexao extends Thread
             try
             {
                 supervisoraDeConexao =
-                        new SupervisoraDeConexao (conexao, usuarios);
+                        new SupervisoraDeConexao (conexao, usuarios, baralho);
             }
             catch (Exception erro)
             {} // sei que passei parametros corretos para o construtor

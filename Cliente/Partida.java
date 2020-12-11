@@ -24,8 +24,20 @@ public class Partida extends Thread
             catch (InterruptedException e)
             {}
         }
-        System.out.println("Esperando jogadores...  (" + this.jogadores.size() + "/3)");
-        System.out.println("Comecando o jogo...");
+
+		servidor.receba(new ComunicadoIniciarJogo());
+				
+		Comunicado comunicado = null;
+		do
+		{
+			comunicado = (Comunicado)servidor.espie();
+			System.out.println("BBBBBBBBBBB");
+		}
+		while(!(comunicado instanceof Mao));
+		Mao mao = (Mao)servidor.envie();
+        for(;;){
+            System.out.println("Comecando o jogo...");
            
+        }
     }
 }

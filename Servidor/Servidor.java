@@ -12,7 +12,7 @@ public class Servidor
             return;
         }
 
-        String porta=Servidor.PORTA_PADRAO;
+        String porta = Servidor.PORTA_PADRAO;
 
         if (args.length==1)
             porta = args[0];
@@ -20,11 +20,14 @@ public class Servidor
         ArrayList<Parceiro> usuarios =
                 new ArrayList<Parceiro> ();
 
+        Baralho baralho = new Baralho();
+
+
         AceitadoraDeConexao aceitadoraDeConexao=null;
         try
         {
             aceitadoraDeConexao =
-                    new AceitadoraDeConexao (porta, usuarios);
+                    new AceitadoraDeConexao (porta, usuarios, baralho);
             aceitadoraDeConexao.start();
         }
         catch (Exception erro)
@@ -32,13 +35,23 @@ public class Servidor
             System.err.println ("Escolha uma porta apropriada e liberada para uso!\n");
             return;
         }
-
+        
+		
         for(;;)
         {
             System.out.println ("O servidor esta ativo! Para desativa-lo,");
             System.out.println ("use o comando \"desativar\"\n");
             System.out.print   ("> ");
-
+            
+			Partida jogo = null;
+			try
+			{
+				jogo = new Partida(usuarios, baralho);
+				jogo.run();
+			}
+			catch (Exception erro)
+			{}
+			
             String comando=null;
             try
             {

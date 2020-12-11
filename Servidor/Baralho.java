@@ -9,23 +9,24 @@ public class Baralho {
 
     //♣ ♠ ♦ ♥
     private String[] texto = {"A♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "J♣", "Q♣", "K♣",
-                              "A♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠",
-                              "A♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "J♦", "Q♦", "K♦",
-                              "A♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "J♥", "Q♥", "K♥"};
+            "A♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠",
+            "A♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "J♦", "Q♦", "K♦",
+            "A♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "J♥", "Q♥", "K♥"};
 
     private int[] valor = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10,
-                           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10,
-                           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10,
-                           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
 
-    public Baralho(){
+    public Baralho()
+    {
         for (byte i = 0; i < 52; i++){
             baralho[i] = new Carta(texto[i], valor[i]);
         }
         qtd = 52;
     }
 
-    public void reset(){
+    public synchronized void start(){
         for (byte i = 0; i < 52; i++){
             baralho[i] = new Carta(texto[i], valor[i]);
         }
@@ -36,14 +37,15 @@ public class Baralho {
         for(int i = pos; i < qtd-1; i++){
             baralho[i] = baralho[i+1];
         }
-        qtd--;
+        this.qtd--;
     }
 
-    public Carta comprar(){
-        int pos = (int)Math.round((Math.random() * 100)*(qtd-1)/100);
+    public synchronized Carta comprar(){
+        int pos = (int) Math.round(Math.random() * (qtd-1));
 
         Carta carta = baralho[pos];
         removerDoBaralho(pos);
         return carta;
     }
 }
+

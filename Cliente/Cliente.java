@@ -84,16 +84,13 @@ public class Cliente
         {} // sei que servidor foi instanciado
 		
         tratadoraDeComunicadoDeDesligamento.start();
-        
+                
         
         char jogarDeNovo = ' ';
         int soma = 0;
         int opcao = 0;
-        int qtdCartas = 0;
         String textoCarta = ""; 
-        boolean primeiraVez = true;
         int valorCarta = 0;
-		Mao mao;
 		PilhaDeDescarte pilhaDeDescarte = new PilhaDeDescarte();
 		Teclado teclado = new Teclado();
 			
@@ -104,22 +101,28 @@ public class Cliente
 				System.out.println("=============== JOGO 21 ===============");
 				
 				System.out.print("\nEstas sao suas cartas: ");
+				System.out.print("\nAAAAAAAAAAAAA");
+				
 				servidor.receba(new PedidoDeMao());
+				
 				Comunicado comunicado = null;
 				do
 				{
 					comunicado = (Comunicado)servidor.espie();
+					System.out.println("BBBBBBBBBBB");
 				}
 				while(!(comunicado instanceof Mao));
-				mao = (Mao)servidor.envie();
+				Mao mao = (Mao)servidor.envie();
 				
+
 				System.out.println(mao.toString());
 				soma = mao.getValorTotal();
-				qtdCartas = 3;
+				
 				System.out.print("\nSua soma e : " + soma);
+				
 				do
 				{
-					if(primeiraVez == true)
+					if(pilhaDeDescarte.getQtdCartas() == 0)
 					{
 						try
 						{
@@ -137,9 +140,9 @@ public class Cliente
 					{
 						try
 						{
-							System.out.print("\n\nDigite 1 para comprar do monte: ");			
+							System.out.print("\n\nDigite 1 para comprar do monte ou 2 para comprar da pilha de descartes: ");			
 							opcao = teclado.getUmInt();
-							if(opcao != 1)
+							if(opcao != 1 || opcao != 2)
 								System.out.println("Opcao invalida");
 						}
 						catch(Exception erro)
@@ -148,10 +151,29 @@ public class Cliente
 						}
 					}
 					
-				}while (opcao != 1);
+				}while (opcao != 1 || opcao != 2);
 				
-				qtdCartas = 4;
-				//mao.comprarQuartaCarta();
+				
+				if(opcao == 1)
+				{
+					servidor.receba(new PedidoDeCompra());
+					do
+					{
+						comunicado = (Comunicado)servidor.espie();
+					}
+					while(!(comunicado instanceof Carta));
+					Carta cartaComprada = (Carta)servidor.envie();
+				}
+				else
+				{
+					servidor.receba(new PedidoPilhaDeDescarte());
+					do
+					{
+						comunicado = (Comunicado)servidor.espie();
+					}
+					while(!(comunicado instanceof Carta));
+					Carta cartaComprada = (Carta)servidor.envie();
+				}
 				//System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()) + "\n\n");
 				
 				//System.out.print("\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
@@ -180,34 +202,33 @@ public class Cliente
 				{
 					case 1:
 					{
-						servidor.receba(mao.descartar(0));
-						//pilhaDescarte = mao.getPrimeiraCarta();
-						//mao.removerDaMao(pilhaDescarte);
-						qtdCartas = 3;
+						Carta carta1 = mao.descartar(0);
+						pilhaDeDescarte.adicionarNaPilha(carta1); 
+						servidor.receba(carta1);
 					}	
 					break;	
 					case 2:
-						//pilhaDescarte = mao.getSegundaCarta();
-						//mao.removerDaMao(pilhaDescarte);
-						qtdCartas = 3;
+						Carta carta2 = mao.descartar(1);
+						pilhaDeDescarte.adicionarNaPilha(carta2); 
+						servidor.receba(carta2);
 					break;
 					case 3:
-						//pilhaDescarte
-						//mao.removerDaMao(pilhaDescarte);
-						qtdCartas = 3;
+						Carta carta3 = mao.descartar(2);
+						pilhaDeDescarte.adicionarNaPilha(carta3); 
+						servidor.receba(carta3);
 					break;
 					case 4:
-						//pilhaDescarte = mao.getQuartaCarta();
-						//mao.removerDaMao(pilhaDescarte);
-						qtdCartas = 3;					
+						Carta carta4 = mao.descartar(3);
+						pilhaDeDescarte.adicionarNaPilha(carta4); 
+						servidor.receba(carta4);
 					break;
 				}
 				System.out.print("Agora, estas sao suas cartas: ");
-			//	System.out.print(mao.getMaoTresCartas());
+				System.out.print(mao.toString());
 				soma = mao.getValorTotal();
 				System.out.println("Sua soma agora e: " + soma);
 				
-				if(soma == 21 && qtdCartas == 3)
+				if(soma == 21)
 				{
 					try
 					{
@@ -256,4 +277,5 @@ public class Cliente
 		System.exit(0);
     }
 }
+
 

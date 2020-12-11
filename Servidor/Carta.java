@@ -1,4 +1,4 @@
-public class Carta {
+public class Carta extends Comunicado{
     private String texto;
     private int valor;
 
@@ -7,12 +7,13 @@ public class Carta {
         this.valor = valor;
     }
 
+
     public int getValor(){
         return valor;
     }
 
     public String toString(){
-        return texto;
+        return "|"+texto+"|";
     }
 
     public boolean equals(Object obj){
@@ -46,4 +47,28 @@ public class Carta {
         return this.texto.compareTo(carta.texto);
     }
 
+    public Carta(Carta carta) throws Exception{
+        if(carta == null)
+            throw new Exception("Classe inválida");
+
+        this.texto = carta.toString();
+        this.valor = carta.getValor();
+    }
+
+
+    public Object clone ()
+    {
+        Carta ret = null;
+
+        try
+        {
+            ret = new Carta(this);
+        }
+        catch (Exception e)
+        {}
+
+        return ret;
+    }
+
 }
+

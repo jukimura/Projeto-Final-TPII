@@ -85,7 +85,6 @@ public class Cliente
 		
         tratadoraDeComunicadoDeDesligamento.start();
                 
-        
         char jogarDeNovo = ' ';
         int soma = 0;
         int opcao = 0;
@@ -93,7 +92,8 @@ public class Cliente
         int valorCarta = 0;
 		PilhaDeDescarte pilhaDeDescarte = new PilhaDeDescarte();
 		Teclado teclado = new Teclado();
-			
+		Carta cartaComprada;
+		
 		do
 		{      
 			try
@@ -101,7 +101,6 @@ public class Cliente
 				System.out.println("=============== JOGO 21 ===============");
 				
 				System.out.print("\nEstas sao suas cartas: ");
-				System.out.print("\nAAAAAAAAAAAAA");
 				
 				servidor.receba(new PedidoDeMao());
 				
@@ -109,12 +108,10 @@ public class Cliente
 				do
 				{
 					comunicado = (Comunicado)servidor.espie();
-					System.out.println("BBBBBBBBBBB");
 				}
 				while(!(comunicado instanceof Mao));
 				Mao mao = (Mao)servidor.envie();
 				
-
 				System.out.println(mao.toString());
 				soma = mao.getValorTotal();
 				
@@ -140,6 +137,7 @@ public class Cliente
 					{
 						try
 						{
+							System.out.println("\n Pilha de descartes: " + pilhaDeDescarte.toString());
 							System.out.print("\n\nDigite 1 para comprar do monte ou 2 para comprar da pilha de descartes: ");			
 							opcao = teclado.getUmInt();
 							if(opcao != 1 || opcao != 2)
@@ -162,7 +160,7 @@ public class Cliente
 						comunicado = (Comunicado)servidor.espie();
 					}
 					while(!(comunicado instanceof Carta));
-					Carta cartaComprada = (Carta)servidor.envie();
+					cartaComprada = (Carta)servidor.envie();
 				}
 				else
 				{
@@ -172,14 +170,16 @@ public class Cliente
 						comunicado = (Comunicado)servidor.espie();
 					}
 					while(!(comunicado instanceof Carta));
-					Carta cartaComprada = (Carta)servidor.envie();
+					cartaComprada = (Carta)servidor.envie();
 				}
-				//System.out.print("\nA carta que voce comprou e: " + mao.getTexto(mao.getQuartaCarta()) + "\n\n");
 				
-				//System.out.print("\nAgora, estas sao suas cartas: " + mao.getMaoQuatroCartas() + "\n");
-				//soma = mao.getValorTotalQuatroCartas();
+				System.out.print("\nA carta que voce comprou e: " + cartaComprada + "\n\n");
+				System.out.print("\nAgora, estas sao suas cartas: " +mao.toString() + "\n");
+				
+				soma = mao.getValorTotal();
 				System.out.println("\nSua soma e: " + soma + "\n");
-				System.out.print("\nQual carta voce deseja descartar? ");
+				
+				System.out.print("\nQual carta voce deseja descartar[1, 2, 3, 4]? ");
 				int opcaoCartaASerDescartada = 0;
 				boolean ehValida = false;
 				do
@@ -194,7 +194,7 @@ public class Cliente
 					} 
 					catch(Exception erro)
 					{
-						//System.out.print(" Você não possui essa carta. Insira uma carta válida [" + mao.getTexto(mao.getPrimeiraCarta()) + ", " + mao.getTexto(mao.getSegundaCarta()) + ", " + mao.getTexto(mao.getTerceiraCarta()) + ", " + mao.getTexto(mao.getQuartaCarta()) + "]: ");
+						System.out.print("Opcao invalida");
 					}
 				}while(ehValida != true);
 				
@@ -223,8 +223,7 @@ public class Cliente
 						servidor.receba(carta4);
 					break;
 				}
-				System.out.print("Agora, estas sao suas cartas: ");
-				System.out.print(mao.toString());
+				System.out.print("Agora, estas sao suas cartas: " + mao.toString() + "\n");
 				soma = mao.getValorTotal();
 				System.out.println("Sua soma agora e: " + soma);
 				

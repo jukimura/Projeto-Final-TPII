@@ -4,9 +4,7 @@ import java.util.ArrayList;
 public class Partida extends Thread
 {
     private Baralho baralho;
-
     private Carta descarte = null;
-
     private ArrayList<Parceiro> jogadores;
 
     public Partida(ArrayList<Parceiro> usuarios, Baralho baralho){
@@ -26,6 +24,6 @@ public class Partida extends Thread
         }
         System.out.println("Esperando jogadores...  (" + this.jogadores.size() + "/3)");
         System.out.println("Comecando o jogo...");
-           
+			
     }
 }

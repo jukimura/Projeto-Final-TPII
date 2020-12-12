@@ -9,7 +9,6 @@ public class SupervisoraDeConexao extends Thread
     private Socket              conexao;
     private ArrayList<Parceiro> usuarios;
     private Baralho             baralho;
-	
 
     public SupervisoraDeConexao
             (Socket conexao, ArrayList<Parceiro> usuarios, Baralho baralho)

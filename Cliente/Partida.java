@@ -31,7 +31,6 @@ public class Partida extends Thread
 		do
 		{
 			comunicado = (Comunicado)servidor.espie();
-			System.out.println("BBBBBBBBBBB");
 		}
 		while(!(comunicado instanceof Mao));
 		Mao mao = (Mao)servidor.envie();

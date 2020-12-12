@@ -1,4 +1,4 @@
-public class Carta extends Comunicado
+public class Carta implements Comunicado
 {
     private String texto;
     private int valor;
@@ -46,5 +46,4 @@ public class Carta extends Comunicado
     public int compareTo(Carta carta){
         return this.texto.compareTo(carta.texto);
     }
-
 }

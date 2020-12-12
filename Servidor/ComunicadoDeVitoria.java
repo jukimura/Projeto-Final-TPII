@@ -1,2 +1,2 @@
-public class ComunicadoDeVitoria extends Comunicado
+public class ComunicadoDeVitoria implements Comunicado
 {}

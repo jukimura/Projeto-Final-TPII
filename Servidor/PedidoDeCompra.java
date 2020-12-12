@@ -1,2 +1,2 @@
-public class PedidoDeCompra extends Comunicado
+public class PedidoDeCompra implements Comunicado
 {}

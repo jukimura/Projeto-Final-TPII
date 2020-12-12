@@ -1,4 +1,4 @@
 
-public class PedidoPilhaDeDescarte extends Comunicado
+public class PedidoPilhaDeDescarte implements Comunicado
 {
 }

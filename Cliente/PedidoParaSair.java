@@ -1,2 +1,2 @@
-public class PedidoParaSair extends Comunicado
+public class PedidoParaSair implements Comunicado
 {}

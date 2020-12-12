@@ -1,4 +1,4 @@
-public class QuantidadeJogadoresMsg extends Comunicado{
+public class QuantidadeJogadoresMsg implements Comunicado{
     byte qtdJogadores = 0;
     public QuantidadeJogadoresMsg(){
 

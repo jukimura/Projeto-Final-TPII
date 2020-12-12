@@ -1,4 +1,4 @@
-public class Mao extends Comunicado{
+public class Mao implements Comunicado{
     private Carta[] mao = new Carta[4];
     private int qtd = 0;
 

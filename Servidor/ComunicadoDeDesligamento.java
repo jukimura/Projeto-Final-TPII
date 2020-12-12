@@ -1,2 +1,2 @@
-public class ComunicadoDeDesligamento extends Comunicado
+public class ComunicadoDeDesligamento implements Comunicado
 {}

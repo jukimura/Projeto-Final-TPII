@@ -46,8 +46,10 @@ public class Servidor
 			Partida jogo = null;
 			try
 			{
+				
 				jogo = new Partida(usuarios, baralho);
 				jogo.run();
+				
 			}
 			catch (Exception erro)
 			{}

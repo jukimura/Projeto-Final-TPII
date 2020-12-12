@@ -1,3 +1,3 @@
 
-public class PedidoDeMao extends Comunicado
+public class PedidoDeMao implements Comunicado
 {}

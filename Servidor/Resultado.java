@@ -1,4 +1,4 @@
-public class Resultado extends Comunicado
+public class Resultado implements Comunicado
 {
     private double valorResultante;
 

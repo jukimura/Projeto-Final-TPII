@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-public class Cliente 
+public class Cliente
 {
     public static final String HOST = "localhost";
     public static final int PORTA_PADRAO = 3000;
@@ -84,7 +84,7 @@ public class Cliente
         {} // sei que servidor foi instanciado
 		
         tratadoraDeComunicadoDeDesligamento.start();
-                
+        
         char jogarDeNovo = ' ';
         int soma = 0;
         int opcao = 0;
@@ -102,12 +102,14 @@ public class Cliente
 				
 				System.out.print("\nEstas sao suas cartas: ");
 				
-				servidor.receba(new PedidoDeMao());
+				//servidor.receba(new PedidoDeMao());
+				transmissor.writeObject(new PedidoDeMao());
+				transmissor.flush();
 				
 				Comunicado comunicado = null;
 				do
 				{
-					comunicado = (Comunicado)servidor.espie();
+					comunicado = (Comunicado)receptor.readObject();
 				}
 				while(!(comunicado instanceof Mao));
 				Mao mao = (Mao)servidor.envie();
@@ -154,20 +156,24 @@ public class Cliente
 				
 				if(opcao == 1)
 				{
-					servidor.receba(new PedidoDeCompra());
+					//servidor.receba(new PedidoDeCompra());
+					transmissor.writeObject(new PedidoDeCompra());
+					transmissor.flush();
 					do
 					{
-						comunicado = (Comunicado)servidor.espie();
+						comunicado = (Comunicado)receptor.readObject();
 					}
 					while(!(comunicado instanceof Carta));
 					cartaComprada = (Carta)servidor.envie();
 				}
 				else
 				{
-					servidor.receba(new PedidoPilhaDeDescarte());
+					//servidor.receba(new PedidoPilhaDeDescarte());
+					transmissor.writeObject(new PedidoPilhaDeDescarte());
+					transmissor.flush();
 					do
 					{
-						comunicado = (Comunicado)servidor.espie();
+						comunicado = (Comunicado)receptor.readObject();
 					}
 					while(!(comunicado instanceof Carta));
 					cartaComprada = (Carta)servidor.envie();
@@ -204,23 +210,31 @@ public class Cliente
 					{
 						Carta carta1 = mao.descartar(0);
 						pilhaDeDescarte.adicionarNaPilha(carta1); 
-						servidor.receba(carta1);
+						//servidor.receba(carta1);
+						transmissor.writeObject(carta1);
+						transmissor.flush();
 					}	
 					break;	
 					case 2:
 						Carta carta2 = mao.descartar(1);
 						pilhaDeDescarte.adicionarNaPilha(carta2); 
-						servidor.receba(carta2);
+						//servidor.receba(carta2);
+						transmissor.writeObject(carta2);
+						transmissor.flush();
 					break;
 					case 3:
 						Carta carta3 = mao.descartar(2);
 						pilhaDeDescarte.adicionarNaPilha(carta3); 
-						servidor.receba(carta3);
+						//servidor.receba(carta3);
+						transmissor.writeObject(carta3);
+						transmissor.flush();
 					break;
 					case 4:
 						Carta carta4 = mao.descartar(3);
 						pilhaDeDescarte.adicionarNaPilha(carta4); 
-						servidor.receba(carta4);
+						//servidor.receba(carta4);
+						transmissor.writeObject(carta4);
+						transmissor.flush();
 					break;
 				}
 				System.out.print("Agora, estas sao suas cartas: " + mao.toString() + "\n");
@@ -229,10 +243,13 @@ public class Cliente
 				
 				if(soma == 21)
 				{
+					ComunicadoDeVitoria comunicadoDeVitoria = new ComunicadoDeVitoria();
 					try
 					{
-						ComunicadoDeVitoria comunicadoDeVitoria = new ComunicadoDeVitoria();
-						servidor.receba(comunicadoDeVitoria);
+						//servidor.receba(comunicadoDeVitoria);
+						transmissor.writeObject(comunicadoDeVitoria);
+						transmissor.flush();
+						System.out.println("Você ganhou!!");
 					}
 					catch(Exception erro)
 					{
@@ -264,10 +281,13 @@ public class Cliente
 				System.err.println ("e volte a tentar mais tarde!\n");
 			}							
 		}
+		
 		while(jogarDeNovo == 'S');
 		try
 		{
-			servidor.receba (new PedidoParaSair ());
+			//servidor.receba (new PedidoParaSair ());
+			transmissor.writeObject(new PedidoParaSair());
+			transmissor.flush();
 		}
 		catch (Exception erro)
 		{}
